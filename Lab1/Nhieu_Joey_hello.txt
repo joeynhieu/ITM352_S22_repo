@@ -1,3 +1,0 @@
-<html>
-    Hello from <b>Joey Nhieu</b>!
- </html>
