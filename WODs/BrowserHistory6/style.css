@@ -1,0 +1,22 @@
+body{
+    color: yellow;
+    margin: 10px 50px 10px 50px;
+    width: 950px;
+    background-color: black;
+    font-family: 'Open Sans', sans-serif;
+}
+h1, h2{
+    font-family: 'Oswald', sans-serif;
+}
+#navigationbar a{
+    margin-left: 50px;
+    margin-right: 50px;
+}
+ul{
+    list-style-type: none;
+    padding: 0;
+
+}
+li{
+    display: inline;
+}

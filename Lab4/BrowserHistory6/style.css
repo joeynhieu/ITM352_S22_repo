@@ -3,29 +3,14 @@ h1,h2{
 }
 img{
     float: left;
+    margin-right: 10px ;
 }
 body{
     width: 950px;
     margin: 10px 50px 10px 50px;
-    color: Darkblue;
+    color: white;
     font-family: 'Open Sans', sans-serif;
-    background-color: ivory;
-}
-.left{
-    float: left;
-    width: 300px;
-   padding: 1cm;
-}
-.right{
-    float: right;
-    width: 300px;
-    padding: 1cm;
-   
-}
-.center{
-    margin-left: 300px;
-    margin-right: 300px;
-    padding: 1cm;
+    background-color: black;
 }
 ul{
     list-style-type: none;

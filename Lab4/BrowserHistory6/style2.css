@@ -1,28 +1,12 @@
 h1,h2{
     font-family: 'Oswald', sans-serif;
 }
-img{
-    float: left;
-}
 body{
     width: 950px;
     margin: 10px 50px 10px 50px;
-    color: Darkblue;
+    color: yellow;
     font-family: 'Open Sans', sans-serif;
-    background-color: ivory;
-}
-.left{
-    float: left;
-    width: 300px;
-}
-.right{
-    float: right;
-    width: 300px;
-}
-.center{
-    margin-left: 300px;
-    margin-right: 300px;
-    padding: 1cm;
+    background-color: black;
 }
 ul{
     list-style-type: none;
