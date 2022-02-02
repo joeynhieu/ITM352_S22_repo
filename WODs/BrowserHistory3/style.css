@@ -1,0 +1,40 @@
+body{
+    color: darkblue;
+    margin: 10px 50px 10px 50px;
+    width: 950px;
+    background-color: ivory;
+    font-family: 'Open Sans', sans-serif;
+}
+img{
+    float: left;
+}
+h1, h2{
+    font-family: 'Oswald', sans-serif;
+}
+#navigationbar a{
+    margin-left: 50px;
+    margin-right: 50px;
+}
+ul{
+    list-style-type: none;
+    padding: 0;
+
+}
+li{
+    display: inline;
+}
+.left{
+    width: 300px;
+    float: left;
+    padding: 1cm;
+}
+.center{
+    margin-left: 300px;
+    margin-right: 300px;
+    padding: 1cm;
+}
+.right{
+    width: 300px;
+    float: right;
+    padding: 1cm;
+}
