@@ -7,6 +7,9 @@
     <title>Smartphone Products</title>
     <link rel="stylesheet" href="products-style.css">
     <style id="localstyle"></style>
+    <script src="./products_data.js">
+    
+</script>
 </head>
 <body>
    
@@ -17,30 +20,40 @@
         <input id='speedSlider' type='range' min=".1" max="5" step=".1" style="direction: rtl;" onchange="localStyle.innerHTML = '.rotate img {animation-duration: ' + speedSlider.value + 's;}';">
 
     <section class="item" onmouseover="this.className = 'item rotate'" onclick="this.className = 'item'">
-        <h2>HTC</h2>
-        <p> &dollar;40.00 </p>
-        <img src= "http://dport96.github.io/ITM352/morea/080.flow-control-II/HTC.jpg">
+        <script>document.write(name1)</script></h2>
+        <p>$<script>document.write(price1)</script></p>
+        <img id="image1_id"><script>image1_id.src = image1;</script>.
+
+
        
     </section>
     <section class="item" onmouseover="this.className = 'item rotate'" onclick="this.className = 'item'">
-        <h2>Apple</h2>
-        <p> &dollar;75.00 </p>
-        <img src= "http://dport96.github.io/ITM352/morea/080.flow-control-II/iphone-3gs.jpg">
+        <script>document.write(name2)</script></h2>
+        <p>$<script>document.write(price2)</script></p>
+        <img id="image2_id"><script>image2_id.src = image2;</script>.
+
+
     </section>
     <section class="item" onmouseover="this.className = 'item rotate'" onclick="this.className = 'item'">
-     <h2>Nokia</h2>
-     <p> &dollar;35.00</p>
-        <img src= "http://dport96.github.io/ITM352/morea/080.flow-control-II/Nokia.jpg">
+     <script>document.write(name3)</script></h2>
+     <p>$<script>document.write(price3)</script></p>
+        <img id="image3_id"><script>image3_id.src = image3;</script>.
+
+
     </section>
     <section class="item" onmouseover="this.className = 'item rotate'" onclick="this.className = 'item'">
-        <h2>Samsung</h2>
-        <p> &dollar;45.00</p>
-        <img src= "http://dport96.github.io/ITM352/morea/080.flow-control-II/Samsung.jpg">
+        <script>document.write(name4)</script></h2>
+        <p>$<script>document.write(price4)</script></p>
+        <img id="image4_id"><script>image4_id.src = image4;</script>.
+
+
     </section>
     <section class="item" onmouseover="this.className = 'item rotate'" onclick="this.className = 'item'">
-        <h2>Blackberry</h2>
-        <p> &dollar;10.00</p>
-        <img src= "http://dport96.github.io/ITM352/morea/080.flow-control-II/Blackberry.jpg">
+        <script>document.write(name5)</script></h2>
+        <p>$<script>document.write(price5)</script></p>
+        <img id="image5_id"><script>image5_id.src = image5;</script>.
+
+
     </section>
     </main>
 </div>
