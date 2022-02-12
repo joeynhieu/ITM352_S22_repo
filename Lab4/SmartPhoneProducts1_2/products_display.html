@@ -11,6 +11,9 @@
     store_name = "Joey";
     var hits = 1;
     var spins = 2;
+    var first_name = "Joey";
+    var last_name = "Nhieu";
+
     </script>
     
 </head>
@@ -27,7 +30,7 @@
     <main>
         <input id='speedSlider' type='range' min=".1" max="5" step=".1" style="direction: rtl;" onchange="localStyle.innerHTML = '.rotate img {animation-duration: ' + speedSlider.value + 's;}';">
 
-    <section class="item" onclick="hits_span.innerHTML = hits;" onmouseover="spins_span.innerHTML = spins;">
+    <section class="item" onclick="hits_span.innerHTML = hits++;" onmouseover="spins_span.innerHTML++;">
         <h2>HTC</h2>
         <p> &dollar;40.00 </p>
         <img src= "http://dport96.github.io/ITM352/morea/080.flow-control-II/HTC.jpg">
