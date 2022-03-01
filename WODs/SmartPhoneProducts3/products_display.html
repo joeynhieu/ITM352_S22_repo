@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+     <script src="./products_data.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smartphone Products</title>
     <link rel="stylesheet" href="products-style.css">
     <style id="localstyle"></style>
-    <script src="./products_data.js">
-    
-
-    </script>
+   
 </head>
 <body>
    
@@ -22,13 +20,13 @@
 
    
        <script>
-           for (i = 1; eval("typeof name"+i) != 'undefined'; i++){ 
+           for (i = 0; i < products.length; i++){ 
               
            document.write(` 
            <section class="item" onmouseover="this.className = 'item rotate'" onclick="this.className = 'item'">
-             <h2>${eval("name" + i)}</h2>
-             <p>$ ${eval("price" + i)}</p>
-             <img src = ${eval("image" + i)}>
+             <h2>${products[i].brand}</h2>
+             <p>$ ${products[i].price}</p>
+             <img src = ${products[i].image}>
            </section>
 `);}
        </script>
