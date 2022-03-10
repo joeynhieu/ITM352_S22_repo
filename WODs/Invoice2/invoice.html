@@ -28,34 +28,7 @@
      var quantity5 = 12;
      var price5 = 2.10;
 
-    // Compute extended prices
-    var extended_price1 = price1 * quantity1;
-    var extended_price2 = price2 * quantity2;
-    var extended_price3 = price3 * quantity3;
-    var extended_price4 = price4 * quantity4;
-    var extended_price5 = price5 * quantity5;
-
-    // Compute Subtotal
-    var subtotal = extended_price1 + extended_price2 + extended_price3 + extended_price4 + extended_price5;
-
-    // Compute Tax Rate
-    var tax_rate = 0.0575 * subtotal;
-
-    // Compute Shipping Cost
-    var shipping_cost;
-
-    // Compute Shipping Algorithm
-    if(subtotal <= 49.99){
-      shipping_cost = 2;
-    } else if(subtotal > 49.99 && subtotal <= 99.99){
-      shipping_cost = 5;
-    } else{
-      shipping_cost = subtotal * 0.05;
-    }
-
-    // Compute Subtotal
-    var grand_total = tax_rate + subtotal + shipping_cost;
-
+    
 </script>
 
 <!DOCTYPE html>
@@ -85,7 +58,36 @@
             <td width="54%">$ ${extended_price1}</td>
           </tr>
        
-          `);}
+          `)}
+
+          // Compute extended prices
+    var extended_price1 = price1 * quantity1;
+    var extended_price2 = price2 * quantity2;
+    var extended_price3 = price3 * quantity3;
+    var extended_price4 = price4 * quantity4;
+    var extended_price5 = price5 * quantity5;
+
+    // Compute Subtotal
+    var subtotal = extended_price1 + extended_price2 + extended_price3 + extended_price4 + extended_price5;
+
+    // Compute Tax Rate
+    var tax_rate = 0.0575 * subtotal;
+
+    // Compute Shipping Cost
+    var shipping_cost;
+
+    // Compute Shipping Algorithm
+    if(subtotal <= 49.99){
+      shipping_cost = 2;
+    } else if(subtotal > 49.99 && subtotal <= 99.99){
+      shipping_cost = 5;
+    } else{
+      shipping_cost = subtotal * 0.05;
+    }
+
+    // Compute Subtotal
+    var grand_total = tax_rate + subtotal + shipping_cost;
+
           </script>
           <tr>
             <td colspan="4" width="100%">&nbsp;</td>
