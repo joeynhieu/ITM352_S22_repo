@@ -1,0 +1,17 @@
+<span id="firstname">Joey</span>, <span id="lastname">Nhieu</span>
+<br>
+
+<input type="button" value="Swap" 
+    onclick=" 
+    //sets a temporary variable to store firstname
+    temp = firstname.innerHTML;
+    firstname.innerHTML = lastname.innerHTML;
+    // sets lastname to saved firstname that was stored temp
+    lastname.innerHTML = temp;
+    ">
+
+while(true){
+    if(controller.move() == false){
+        controller.rotate();
+    }
+}
