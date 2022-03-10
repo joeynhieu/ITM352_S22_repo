@@ -38,4 +38,4 @@ function callback (i,piece){
     console.log (`${piece} is non neg int ${isNonNegIntString(piece, true).join(",")}` );
 }
 
-pieces.forEach(function (item,i){console.log (`${pieces[i]} is non neg int ${isNonNegIntString(pieces[i], true).join(",")}` )};
+//pieces.forEach(function (item,i){console.log (`${pieces[i]} is non neg int ${isNonNegIntString(pieces[i], true).join(",")}` )};
