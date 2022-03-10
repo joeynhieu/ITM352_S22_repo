@@ -1,9 +1,39 @@
+<script src = "products_data.js"></script>
 <script>
     /* This will create a sale receipt for a sale that contains at least 5 products. */
 
-    // Product Data
+    var quantities = [-1, 1.1, 'cat', 0, 5];
 
-    // Product 1
+    function generate_item_rows(product_quantities_array) {
+        for (let i in products) {
+            if (product_quantities_array[i] == 0) continue;
+            errors = isStringNonNegInt(product_quantities_array[i], true);
+            if (errors.length == 0) {
+                extended_price = product_quantities_array[i] * products[i].price
+                subtotal += extended_price;
+            } else {
+                extended_price = "0";
+            }
+            document.write(`
+    <tr>
+      <td width="43%">${products[i].brand}</td>
+      <td align="center" width="11%">${quantities[i]}<br><div style="color:red;">${errors.join('<br>')}</div></td>
+      <td width="13%">\$${products[i].price}</td>
+      <td width="54%">\$${extended_price}</td>
+    </tr>
+    `);
+        }
+    }
+
+    function isStringNonNegInt(q, returnErrors) {
+        errors = [];
+        if (Number(q) != q) errors.push('Not a number!');
+        if (q < 0) errors.push('Negative value');
+        if (parseInt(q) != q) errors.push('Not an integer!');
+
+        return (returnErrors ? errors : (errors.length == 0));
+    }
+    var subtotal = 0;
 
 </script>
 
@@ -25,26 +55,7 @@
             <th style="text-align: center;" width="54%">extended price</th>
           </tr>
           <script> 
-          for (i = 1; eval("typeof item"+ i) != 'undefined'; i++){
-          document.write(`
-          <tr>
-            <td width="43%">${eval("item"+i)}</td>
-            <td align="center" width="11%">${eval("quantity"+i)}</td>
-            <td width="13%">$ ${eval("price"+i)}</td>
-            <td width="54%">$ ${extended_price1}</td>
-          </tr>
-       
-          `)}
-
-          // Compute extended prices
-    var extended_price1 = price1 * quantity1;
-    var extended_price2 = price2 * quantity2;
-    var extended_price3 = price3 * quantity3;
-    var extended_price4 = price4 * quantity4;
-    var extended_price5 = price5 * quantity5;
-
-    // Compute Subtotal
-    var subtotal = extended_price1 + extended_price2 + extended_price3 + extended_price4 + extended_price5;
+        generate_item_rows(quantities);
 
     // Compute Tax Rate
     var tax_rate = 0.0575 * subtotal;
@@ -65,35 +76,35 @@
     var grand_total = tax_rate + subtotal + shipping_cost;
 
           </script>
-          <tr>
-            <td colspan="4" width="100%">&nbsp;</td>
-          </tr>
-          <script> document.write(`
-          <tr>
-            <td style="text-align: center;" colspan="3" width="67%">Sub-total</td>
-            <td width="54%">$ ${subtotal.toFixed(2)}</td>
-          </tr>`);
-       </script>
-       <script> document.write(`
-          <tr>
-            <td style="text-align: center;" colspan="3" width="67%"><span style="font-family: arial;">Tax @ 5.75%</span></td>
-            <td width="54%">$ ${tax_rate.toFixed(2)}</td>
-          </tr>`);
-        </script>
+         <tr>
+          <td colspan="4" width="100%">&nbsp;</td>
+        </tr>
         <script> document.write(`
-          <tr>
-            <td style="text-align: center;" colspan="3" width="67%"><span style="font-family: arial;">Shipping</span></td>
-            <td width="54%">$ ${shipping_cost.toFixed(2)}</td>
-          </tr>`);
+        <tr>
+          <td style="text-align: center;" colspan="3" width="67%">Sub-total</td>
+          <td width="54%">$ ${subtotal.toFixed(2)}</td>
+        </tr>`);
+     </script>
+     <script> document.write(`
+        <tr>
+          <td style="text-align: center;" colspan="3" width="67%"><span style="font-family: arial;">Tax @ 5.75%</span></td>
+          <td width="54%">$ ${tax_rate.toFixed(2)}</td>
+        </tr>`);
+      </script>
+      <script> document.write(`
+        <tr>
+          <td style="text-align: center;" colspan="3" width="67%"><span style="font-family: arial;">Shipping</span></td>
+          <td width="54%">$ ${shipping_cost.toFixed(2)}</td>
+        </tr>`);
+      </script>
+      <script> document.write(`
+        <tr>
+          <td style="text-align: center;" colspan="3" width="67%"><strong>Total</strong></td>
+          <td width="54%"><strong>$ ${grand_total.toFixed(2)}</strong></td>
+        </tr>`);
         </script>
-        <script> document.write(`
-          <tr>
-            <td style="text-align: center;" colspan="3" width="67%"><strong>Total</strong></td>
-            <td width="54%"><strong>$ ${grand_total.toFixed(2)}</strong></td>
-          </tr>`);
-          </script>
-        </tbody>   
-      </table>
+      </tbody>   
+    </table>
 
      <p><b>OUR SHIPPING POLICY IS: 
         <br> A subtotal $0 - $49.99 will be $2 shipping
