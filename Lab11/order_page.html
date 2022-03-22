@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form name = "quantity_form" action="display_purchase.html" method="get">
+    <label>Quantity Desired:</label>
+    <input type="text" name ="qty_textbox1" onkeyup="checkQuantityTextbox(this)">
+    <span id='qty_textbox1_message'>Enter a quantity</span>
+    <input type="button" value="Submit">
+</form>
+
+</body>
+
+<script>
+    function checkQuantityTextbox(the_textbox){
+        var error = isStringNonNegInt(the_textbox.value, true);
+        document.getElementById(the_textbox.id + "_message").innerHTML = error.join(',');
+    }
+
+
+//function checks whether the string is an integer --> checks if is number first --> checks if its a positive int --> checks if it can be parsed to an int
+// call upon the function by isStringNonNegInt(array, boolean)
+function isStringNonNegInt(q, returnErrors = false){
+errors = []; // assume no errors at first
+if(Number(q) != q) errors.push('Not a number!'); // Check if string is a number value
+else{
+    if(q < 0) errors.push('Negative value!'); // Check if it is non-negative
+    if(parseInt(q) != q) errors.push('Not an integer!'); // Check that it is an integer
+}
+    return returnErrors ? errors : (errors.length == 0)
+}
+
+function displayPurchase(){
+    document.write(`Thank you for purchasing ${qty_textbox1.value} things!`);
+}
+</script>
+</html>

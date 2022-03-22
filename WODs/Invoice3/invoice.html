@@ -2,45 +2,48 @@
 <script>
     /* This will create a sale receipt for a sale that contains at least 5 products. */
 
-    var quantities = [1,1,1,1,1];
+    // define array quantities 
+    var quantities = [1,'no',1,0,4];
 
-var subtotal = 0;
+    
+ // Compute Subtotal
+    var subtotal = 0;
+       
+ 
 
-function generate_item_rows(product_quantities_array){
-  for (let i in product_quantities_array){
-    if (product_quantities_array[i] == 0){
-      continue;
-    }
-    errors = isNonNegInt(product_quantities_array[i], true);
-    if (errors.length == 0){
-      extended_price = product_quantities_array[i] * products[i].price;
-      subtotal += extended_price;
-    }else{
-      extended_price = "0";
-    }
-    document.write(`
+    function generate_item_rows(product_quantities_array){
+      for (let i in product_quantities_array){
+        if (product_quantities_array[i] == 0)
+        continue;
+        errors = isStringNonNegInt(product_quantities_array[i], true);
+        if(errors.length == 0){
+        extended_price = product_quantities_array[i] * products[i].price;
+        subtotal += extended_price;
+        } else {
+          extended_price = "0";
+       }
+
+          document.write(`
           <tr>
             <td width="43%">${products[i].brand}</td>
-            <td align="center" width="11%">${quantities[i]}</td>
+            <td align="center" width="11%">${quantities[i]}<div style="color:red;">${errors}</div></td>
             <td width="13%">$ ${products[i].price}</td>
             <td width="54%">$ ${extended_price}</td>
           </tr>
        
-          `)
+          `)}
 
-  }
-}
 
-function isNonNegInt(q, returnErrors) {
-        errors = [];
-        if (Number(q) != q) errors.push('Not a number!');
-        if (q < 0) errors.push('Negative value');
-        if (parseInt(q) != q) errors.push('Not an integer!');
 
-        return (returnErrors ? errors : (errors.length == 0));
     }
 
-
+    function isStringNonNegInt(q, returnErrors){
+errors = []; // assume no errors at first
+if(Number(q) != q) errors.push('Not a number!'); // Check if string is a number value
+if(q < 0) errors.push('Negative value!'); // Check if it is non-negative
+if(parseInt(q) != q) errors.push('Not an integer!'); // Check that it is an integer
+return returnErrors ? errors : (errors.length == 0)
+}
 
 </script>
 
@@ -62,9 +65,7 @@ function isNonNegInt(q, returnErrors) {
             <th style="text-align: center;" width="54%">extended price</th>
           </tr>
           <script> 
-         
-
-      generate_item_rows(quantities);
+    generate_item_rows(quantities);
 
     // Compute Tax Rate
     var tax_rate = 0.0575 * subtotal;
