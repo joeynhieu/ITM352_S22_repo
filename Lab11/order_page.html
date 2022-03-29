@@ -7,16 +7,19 @@
     <title>Document</title>
 </head>
 <body>
-    <form name = "quantity_form" action="display_purchase.html" method="get">
+    <form name = "quantity_form" action="" method="post">
     <label>Quantity Desired:</label>
-    <input type="text" name ="qty_textbox1" onkeyup="checkQuantityTextbox(this)">
-    <span id='qty_textbox1_message'>Enter a quantity</span>
-    <input type="button" value="Submit">
+    <input type="text" name ="quantity_textbox" onkeyup="checkQuantityTextbox(this)">
+    <span id='qty_textbox_message'>Enter a quantity</span>
+    <input type="submit" value="Purchase">
 </form>
 
 </body>
 
 <script>
+    let params = (new URL(document.location)).searchParams;
+ 
+
     function checkQuantityTextbox(the_textbox){
         var error = isStringNonNegInt(the_textbox.value, true);
         document.getElementById(the_textbox.id + "_message").innerHTML = error.join(',');
@@ -25,18 +28,33 @@
 
 //function checks whether the string is an integer --> checks if is number first --> checks if its a positive int --> checks if it can be parsed to an int
 // call upon the function by isStringNonNegInt(array, boolean)
-function isStringNonNegInt(q, returnErrors = false){
-errors = []; // assume no errors at first
-if(Number(q) != q) errors.push('Not a number!'); // Check if string is a number value
-else{
+function isStringNonNegInt(q, returnErrors){
+    errors = []; // assume no errors at first
+    if(Number(q) != q) errors.push('Not a number!'); // Check if string is a number value
+        else{
     if(q < 0) errors.push('Negative value!'); // Check if it is non-negative
     if(parseInt(q) != q) errors.push('Not an integer!'); // Check that it is an integer
-}
+    }
     return returnErrors ? errors : (errors.length == 0)
 }
 
 function displayPurchase(){
-    document.write(`Thank you for purchasing ${qty_textbox1.value} things!`);
+  var err = isStringNonNegInt(quantity_textbox.value, true);
+    if (err.length == 0) {
+            document.write(`Thank for you for ordering ${quantity_textbox.value} things!`);
+        } else {
+            qty_textbox_message.innerHTML = `<font color="red">${err.join(' ')} Invalid quantity. Press the back button and try again.</font>`;
+        }
+
 }
+
+if (params.has('quantity_textbox')) {
+        quantity_form["quantity_textbox"].value = params.post('quantity_textbox');
+        checkQuantityTextbox(quantity_form["quantity_textbox"]);
+        if (params.post('quantity_textbox') > 0) {
+            document.write(`Thank you for ordering ${params.post('quantity_textbox')} things!`);
+        }
+      }   
+     
 </script>
 </html>

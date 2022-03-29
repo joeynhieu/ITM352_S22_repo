@@ -3,6 +3,7 @@
     "express": "^4.17.2",
     "global": "^4.4.0",
     "http-server": "^14.1.0",
-    "minimist": "^1.2.5"
+    "minimist": "^1.2.5",
+    "nodemon": "^2.0.15"
   }
 }

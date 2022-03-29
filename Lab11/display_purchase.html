@@ -12,6 +12,19 @@
     <title>Document</title>
 </head>
 <body>
-    
+    Thank you for ordering <span id="quantity_span"></span> things!
+
+    <script>
+        if (params.has("quantity_textbox") && params.get("quantity_textbox") > 0) {
+        quantity_span.innerHTML = params.get('quantity_textbox');
+        } else {
+            document.body.innerHTML = 'Invalid quantity. Press the back button and try again.';
+           
+
+        }
+    </script>
+</body>
+</html>
+
 </body>
 </html>
