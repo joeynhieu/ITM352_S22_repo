@@ -1,5 +1,5 @@
-products = [
-        {
+[
+    {
         "brand" : "Artisan Sanrio",
         "price" : 25.15,
         "image" : "https://i.etsystatic.com/14420193/r/il/114385/3606877892/il_1588xN.3606877892_627y.jpg",
@@ -29,8 +29,4 @@ products = [
         "image" : "https://i.etsystatic.com/26055747/r/il/e14c92/3464508854/il_1588xN.3464508854_7dns.jpg",
         "stock_avl" : 10
         }
-         ]
-
-if(typeof module != 'undefined') {
-  module.exports.products = products;
-}
+]

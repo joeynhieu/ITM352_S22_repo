@@ -1,16 +1,19 @@
-<script 
-src="./product_data.js" type="text/javascript"> 
-//Code mainly taken from previous invoices
+<!--Author Joey Nhieu Assignment 1 Invoice Page: 
+code used from previous invoices e.g. Invoice 3 -->
+<script src="./product_data.js" type="text/javascript"> 
+
 </script> 
 <script>
-  //referenced from assignment 1 examples//
+
+  // Code referenced from Assignment 1 example
+  
         let params = (new URL(document.location)).searchParams;
         var quantities = [];
         if (params.has('submitPurchase')) { 
           for (i = 0; i < products.length; i++) {
             if (params.has(`quantity${i}`)) {
-              a_qty = params.get(`quantity${i}`);
-              quantities[i] = a_qty;
+              qtys = params.get(`quantity${i}`);
+              quantities[i] = qtys;
             }
           }
 

@@ -1,64 +1,101 @@
-<script 
-src="./product_data.js" type="text/javascript"> 
-//Code mainly taken from previous invoices
-</script> 
+<!--Author Joey Nhieu Assignment 1 Invoice Page: 
+code used from previous invoices e.g. Invoice 3 
+Invoice layout reference: https://www.bootdey.com/snippets/view/Simple-invoice-page#html-->
+<script src="./product_data.js" type="text/javascript"> </script>
 <script>
-  //referenced from assignment 1 examples//
-        let params = (new URL(document.location)).searchParams;
-        var quantities = [];
-        if (params.has('submitPurchase')) { 
-          for (i = 0; i < products.length; i++) {
-            if (params.has(`quantity${i}`)) {
-              a_qty = params.get(`quantity${i}`);
-              quantities[i] = a_qty;
+
+    // Code referenced from Assignment 1 example
+    
+          let params = (new URL(document.location)).searchParams;
+          var quantities = [];
+          if (params.has('submitPurchase')) { 
+            for (i = 0; i < products.length; i++) {
+              if (params.has(`quantity${i}`)) {
+                qtys = params.get(`quantity${i}`);
+                quantities[i] = qtys;
+              }
             }
+  
+          } else {
+            document.write('Please enter a valid quantity!');
           }
-
-        } else {
-          document.write('Please enter a valid quantity!');
-        }
-        console.log(quantities);
-
-</script>
-
+          console.log(quantities);
+  
+  </script>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./invoice.css">
+    <title>Document</title>
 </head>
-
 <body>
-  <table border="2">
-    <tbody>
-      <tr>
-        <th style="text-align: center;" width="43%">Item</th>
-        <th style="text-align: center;" width="11%">quantity</th>
-        <th style="text-align: center;" width="13%">price</th>
-        <th style="text-align: center;" width="54%">extended price</th>
-      </tr>
+    
 
-      <script>
-        subtotal = 0;
+
+
+<div class="container bootstrap snippets bootdey">
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-6 col-sm-6 text-left">
+					<div class="client">
+					<h4><strong>Client</strong> Details</h4>
+					<ul class="list-unstyled">
+						<li><strong>First Name:</strong> John</li>
+						<li><strong>Last Name:</strong> Doe</li>
+						<li><strong>Country:</strong> U.S.A.</li>
+					</ul>
+				</div>
+			</div>
+
+				<div class="col-md-6 col-sm-6 text-right">
+					<div class="payment">
+					<h4><strong>Payment</strong> Details</h4>
+					<ul class="list-unstyled">
+						<li><strong>Bank Name:</strong> 012345678901</li>
+						<li><strong>Account Number:</strong> 012345678901</li>
+                        <li><strong>Invoice Number:</strong> 012345678901</li>
+					</ul>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="table-responsive">
+				<table class="table table-condensed nomargin">
+					<thead>
+						<tr>
+							<th>Item Name</th>
+							<th>Quantity</th>
+							<th>Unit Price</th>
+							<th>Extended Price</th>
+						</tr>
+					</thead><script> 
+				
+                         subtotal = 0;
         for (i = 0; i < products.length; i++) {
                   if (quantities[i] > 0) {
                   // product row
                   extended_price = quantities[i] * products[i].price;
                   subtotal += extended_price;
                   document.write(`
-            <tr>
-              <td width="43%">${products[i].brand}</td>
-              <td align="center" width="11%">${quantities[i]}</td>
-              <td width="13%">\$${products[i].price}</td>
-              <td width="54%">\$${extended_price}</td>
-            </tr>
-            `);
-                }
-               }
-
-        // Compute sales tax
+                  	<tbody>
+						<tr>	
+                        <td> 
+								<div><strong>${products[i].brand}</strong></div>
+							</td>  
+							<td>${quantities[i]}</td>
+							<td>$ ${products[i].price}</td>
+							<td>$ ${extended_price}</td>
+				
+						</tr>
+                        </tbody>
+                        `)}}
+                        
+                         // Compute sales tax
         var tax_rate = 0.0575;
         var sales_tax = subtotal * tax_rate;
 
@@ -73,38 +110,51 @@ src="./product_data.js" type="text/javascript">
 
         // Compute grand total
         var grand_total = subtotal + sales_tax;
+</script>
+				</table>
+			</div>
 
+			<hr class="nomargin-top">
+			<div class="row">
+				<div class="col-sm-6 text-left">
+					<h4><strong>Contact</strong> Details</h4>
+					<p class="nomargin nopadding">
+						<strong>Note:</strong> 
+						Lid est laborum dolo rumes fugats.
+					</p><br><!-- no P margin for printing - use <br> instead -->
 
-      </script>
+					<address>
+						PO Box 21132 <br>
+						Some street 2355 USA<br>
+						Phone: 1-800-394-3143 <br>
+						Fax: 1-800-531-3112 <br>
+						Email:support@yourname.com
+					</address>
+				</div>
 
-      <tr>
-        <td style="text-align: center;" colspan="3" width="67%">Sub-total</td>
-        <td width="54%">$
-          <script>document.write(subtotal);</script>
-        </td>
-      </tr>
-      <tr>
-        <td style="text-align: center;" colspan="3" width="67%"><span style="font-family: arial;"> Tax @ <script>document.write(100 * tax_rate);</script>%</span></td>
-        <td width="54%">$
-          <script>document.write(sales_tax.toFixed(2));</script>
-        </td>
-      </tr>
-      <tr>
-        <td style="text-align: center;" colspan="3" width="67%"><span style="font-family: arial;">Shipping</span></td>
-        <td width="54%">$
-          <script>document.write(shipping_cost.toFixed(2));</script>
-        </td>
-      </tr>
-      <tr>
-        <td style="text-align: center;" colspan="3" width="67%"><strong>Total</strong></td>
-        <td width="54%"><strong>$
-            <script>document.write(grand_total.toFixed(2));</script></strong></td>
-      </tr>
-    
-    </tbody>
-  </table>
-  <b>OUR SHIPPING POLICY IS:A subtotal $0 - $49.99 will be $2 shipping<br>
-    A subtotal $50 - $99.99 will be $5 shipping<br>
-    Subtotals over $100 will be charged 5% of the subtotal amount</b>
+				<div class="col-sm-6 text-right">
+					<ul class="list-unstyled">
+						<li><strong>Subtotal: </strong>  $ <script>document.write(subtotal);</script></li>
+						<li><strong>Tax @ 5.75%:</strong>  $<script>document.write(sales_tax.toFixed(2));</script></li>
+						<li><strong>Shipping:</strong> $ <script>document.write(shipping_cost.toFixed(2));</script></li>
+						<li><strong>Grand Total:</strong> $ <script>document.write(grand_total.toFixed(2));</script></li>
+					</ul>     
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="panel panel-default text-right">
+		<div class="panel-body">
+			<a class="btn btn-warning" href="#"><i class="fa fa-pencil-square-o"></i> EDIT</a>
+			<a class="btn btn-primary" href="#"><i class="fa fa-check"></i> SAVE</a>
+			<a class="btn btn-success" href="#" target="_blank"><i class="fa fa-print"></i> PRINT INVOICE</a>
+		</div>
+	</div>
+</div>
+
 </body>
+<footer>
+	<p>Thank you for your purchase!</p>
+</footer>
 </html>
