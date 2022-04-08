@@ -80,7 +80,7 @@ app.get("/register", function (request, response) {
 
  app.post("/register", function (request, response) {
     console.log(request.body);
-    if (request.body.username == undefined && request.body.password == request.body.repeat_password){
+   
     // process a simple register form
     // creates new object
     // sets username, password, email to object
@@ -89,6 +89,7 @@ app.get("/register", function (request, response) {
     users[username].password = request.body.password;
     users[username].email = request.body.email;
 
+    if (username != undefined  && users[username].password == request.body.repeat_password){
     fs.writeFileSync(filename, JSON.stringify(users));
     
     //redirects page to login page
