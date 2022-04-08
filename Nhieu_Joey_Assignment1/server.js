@@ -36,7 +36,7 @@ app.post("/process_quantity_form", function (request, response) {
                 
                 // if all quantities are valid, generate the invoice// 
                 const stringified = queryString.stringify(POST);
-                if (hasvalidquantities && hasquantities) {
+                if (has_valid_quantities && has_quantities) {
                     console.log(stringified);
                     response.redirect("./invoice.html?"+stringified); // using the invoice.html and all the data that is input//
                 }  
@@ -59,4 +59,3 @@ app.post("/process_quantity_form", function (request, response) {
 
 /* Start server */
 app.listen(8080, () => console.log(`listening on port 8080`));
-
