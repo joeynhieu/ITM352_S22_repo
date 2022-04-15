@@ -89,7 +89,7 @@ app.get("/register", function (request, response) {
     users[username].password = request.body.password;
     users[username].email = request.body.email;
 
-    if (username != undefined  && users[username].password == request.body.repeat_password){
+    if (typeof users[username] != undefined  && users[username].password == request.body.repeat_password){
     fs.writeFileSync(filename, JSON.stringify(users));
     
     //redirects page to login page

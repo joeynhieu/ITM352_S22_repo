@@ -1,0 +1,113 @@
+
+<!--Author Joey Nhieu Assignment 1 Product Display Page: 
+code used from previous Labs 11/12
+Invoice layout reference: https://www.bootdey.com/snippets/view/Simple-invoice-page#html-->
+<script src="/product_data.js" type="text/javascript"></script>
+<script>
+    //Referenced Assigment 1 Example
+    function isNonNegInt(q, return_errors = false) {
+        errors = []; // assume no errors at first
+
+        if (q == '') q = 0; // handle blank inputs as if they are 0
+        if (Number(q) != q) errors.push('<font color="red">Not a number!</font>'); // Check if string is a number value
+        else if (q < 0) errors.push('<font color="red">Negative value!</font>'); // Check if it is non-negative
+        else if (parseInt(q) != q) errors.push('<font color="red">Not an integer!</font>'); // Check that it is an integer
+        return return_errors ? errors : (errors.length == 0);
+    }
+
+    function checkQuantityTextbox(theTextbox) {
+        errs = isNonNegInt(theTextbox.value, true);
+        if (errs.length == 0) errs = ['You want:'];
+        if (theTextbox.value.trim() == '') errs = ['Quantity'];
+        document.getElementById(theTextbox.name + '_label').innerHTML = errs.join(", ");
+    }
+
+    window.onload = function () {
+        let params = (new URL(document.location)).searchParams; // get the query string which has the form data//
+        // form was submitted so check that quantities are valid then redirect to invoice if ok//
+        if (params.has('submitPurchase')) {
+            has_errors = false; // assume quantities are valid//
+            total_qty = 0; // need to check if something was selected so we will look if the total > 0//
+            //For every product in the array, write the product number, display its image and name, and list price//
+            for (i = 0; i < products.length; i++) {
+                if (params.has(`quantity${i}`)) {
+                    a_qty = params.get(`quantity${i}`);
+                    // make textboxes sticky in case of invalid data//
+                    product_form[`quantity${i}`].value = a_qty;
+                    total_qty += a_qty;
+                    if (!isNonNegInt(a_qty)) {
+                        has_errors = true; // invalid quantity//
+                        checkQuantityTextbox(product_form[`quantity${i}`]); // show where the error is//
+                    }
+                }
+            }
+            // Now respond to errors or redirect to invoice//
+            if (has_errors) {
+                alert("Please enter only valid quantities!");
+            } else if (total_qty == 0) { //general alert//
+                alert("Please select some quantities!");
+            } else { // all good//
+                window.location = `./invoice.html${document.location.search}`; //Redirects itself//
+                window.stop;
+            }
+        }
+    }
+</script>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="./products-style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keycappa</title>
+</head>
+
+<body>
+    <form name="product_form" action="/process_quantity_form" method="POST">
+        <h1>Keycap Products</h1>
+    <div class="text">
+        <main>
+
+
+<script>
+    //Code from WOD3
+    // added in h3 to print stock val
+    for(i = 0; i <= products.length; i++) {
+
+    document.write(
+    `<section class="item">
+        <h2>${products[i].brand}</h2> 
+        <p>$${products[i].price}</p> 
+        <label>Quantity</label>
+        <input type="text" placeholder="0" name ="quantity${i}" onkeyup = "checkQuantityTextbox(this);"> 
+        <img src= ${products[i].image}>
+        <h3> In Stock: ${products[i].stock_avl}<h3>
+    </section>      
+    `);
+    }
+    
+</script>
+
+        </main>
+    </div>
+    
+    <div class="info" id="contact">
+        <p class = "contacts">Contact Us!</p>
+            <ul>
+                <li>Phone: 808-956-8111</li>
+                <li>Address: 2500 Campus Rd, Honolulu, HI 96822; UH Manoa</li>
+                <li>Email: keycappa@hawaii.edu</li>
+            </ul>
+    </div>
+    <footer> All done? <br>
+        <input type="submit" value = "Purchase" name="submitPurchase">
+    </footer>
+
+</form>
+</body>
+
+</html>

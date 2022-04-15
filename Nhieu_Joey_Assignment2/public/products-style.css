@@ -1,0 +1,55 @@
+/* General */
+
+body {
+    background-color: white;
+    width: 800px;
+    margin: 0 auto;
+}
+
+
+/* Styling the products display */
+
+.item img {
+    width: 200px;
+    height: 200px;
+}
+/* Typography */
+
+h1, h2, p{
+    text-align: center;
+}
+
+footer{
+    font-size: 18pt;
+    text-align: center;
+}
+
+p.contacts{
+    text-align: center;
+}
+
+div.info{
+    text-align: center;
+}
+
+ul{
+    list-style-type: none;
+}
+
+/*  Form styling */
+main {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    background-color: white;
+}
+
+/* block styling */
+
+body > div {
+    border: 5px solid black;
+    display: flex;
+}
+
+
+
