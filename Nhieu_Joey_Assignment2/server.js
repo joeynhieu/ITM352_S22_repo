@@ -1,14 +1,13 @@
-/*Author Joey Nhieu Assignment 1 Server.js: 
+/*Author Joey Nhieu Assignment 2 Server.js: 
 code referenced from previous lab12 
 Received help/assistance from Tai T, Joshua R*/
-
-//Coded taken and modified from Kazman's info_server_Ex4.js from lab 13
 var express = require('express');
 var app = express();
 var myParser = require("body-parser");
 var data = require('./public/product_data.js');
 var products = data.products;
 var fs = require('fs');
+var qs = require('qs');
 const queryString = require('query-string');
 
 //Defines file in variable for later usage
@@ -48,7 +47,7 @@ app.post("/process_form", function(request, response, next){
        }
    }
    
-       // Following code taken from Brittney's code shown in class
+       // Following code taken from code shown in class
        purchase_qs = qs.stringify(request.body); 
        if (validqty == true && totlpurchases == true) { 
            response.redirect('./login_page.html?' + purchase_qs); 
@@ -63,22 +62,22 @@ app.post("/process_form", function(request, response, next){
 app.post("/process_login", function (req, res) {
     var LogError = [];
     console.log(req.body);
-    the_username = req.body.username.toLowerCase(); //Formatting of username to fit specifications
-    if (typeof users_reg_data[the_username] != 'undefined') { 
-        if (req.body.password == users_reg_data[req.body.username].password) {
-            res.redirect('/invoice.html?' + qs.stringify(req.query) + qs.stringify(req.body.username));
+    the_email = req.body.email.toLowerCase(); //Formatting of username to fit specifications
+    if (typeof users_reg_data[the_email] != 'undefined') { 
+        if (req.body.password == users_reg_data[req.body.email].password) {
+            res.redirect('/invoice.html?' + qs.stringify(req.query) + qs.stringify(req.body.email));
             //This redirects to the invoice if the appropriate password is entered
         } else { //Wrong password
             LogError.push = ('Invalid Password');
             console.log(LogError);
-            req.query.username= the_username;
-            req.query.name= users_reg_data[the_username].name;
+            req.query.email= the_email;
+            req.query.name= users_reg_data[the_email].name;
             req.query.LogError=LogError.join(';');
         }
-        } else { //States invalid username and redirects
+        } else { //States invalid email and redirects
             LogError.push = ('Invalid Username');
             console.log(LogError);
-            req.query.username= the_username;
+            req.query.email= the_email;
             req.query.LogError=LogError.join(';');
         }
     res.redirect('./login_page.html?' + qs.stringify(req.query));
@@ -104,21 +103,15 @@ app.post("/process_registration", function (req, res) {
   if ((req.body.fullname.length > 25 && req.body.fullname.length <0)) {
     errors.push('Full Name Too Long');
   }
-  //checks new username
-    var reguser = req.body.username.toLowerCase(); 
+  //checks email 
+    var reguser = req.body.email; 
     if (typeof users_reg_data[reguser] != 'undefined') { //Gives error
-      errors.push('Username taken');
-    }
-    //Makes code the username to only be betters and numbers
-    if (/^[0-9a-zA-Z]+$/.test(req.body.username)) {
-    }
-    else {
-      errors.push('Letters And Numbers Only for Username');
+      errors.push('Email taken --> Hit back arrow to go back and edit');
     }
   
     //password needs to be 6 characters
     if (req.body.password.length < 6) {
-      errors.push('Password Too Short');
+      errors.push('Password Too Short --> Hit back arrow to go back and edit');
     }
     // matches passwords and checks
     if (req.body.password !== req.body.repeat_password) { 
@@ -128,26 +121,26 @@ app.post("/process_registration", function (req, res) {
     if (errors.length == 0) {
       POST = req.body;
       console.log('no errors');
-      var username = POST['username'];
-      users_reg_data[username] = {}; 
-      users_reg_data[username].name = username;
-      users_reg_data[username].password= POST['password'];
-      users_reg_data[username].email = POST['email'];
+      var email = POST['email'];
+      users_reg_data[email] = {}; 
+      users_reg_data[email].name = email;
+      users_reg_data[email].password= POST['password'];
       data = JSON.stringify(users_reg_data); 
       fs.writeFileSync(filename, data, "utf-8");
-      res.redirect('./invoice4.html?' + qs.stringify(req.query));
+      console.log(email);
+      res.redirect('./invoice.html?' + qs.stringify(req.query));
     }
-    e
+
     if (errors.length > 0) {
         console.log(errors);
         req.query.name = req.body.name;
-        req.query.username = req.body.username;
         req.query.password = req.body.password;
         req.query.repeat_password = req.body.repeat_password;
         req.query.email = req.body.email;
 
         req.query.errors = errors.join(';');
-        res.redirect('registration.html?' + qs.stringify(req.query));
+        res.send(req.query.errors);
+        res.redirect('./registration.html?' + qs.stringify(req.query));
     }
 });
 
@@ -167,7 +160,7 @@ app.post("/process_quantity_form", function (request, response) {
                 // if all quantities are valid, generate the invoice// 
                 const stringified = queryString.stringify(POST);
                 if (hasvalidquantities && hasquantities) {
-                    response.redirect("./invoice.html?"+stringified); // using the invoice.html and all the data that is input//
+                    response.redirect("./login_page.html?"+stringified); // using the invoice.html and all the data that is input//
                 }  
                 else {response.send('Enter a valid quantity!')} 
             }
@@ -182,13 +175,5 @@ function isNonNegInt(stringToCheck, returnErrors = false) {
 
     return returnErrors ? errors : (errors.length == 0);
 }
-
-app.all('*', function (request, response, next) {
-    console.log(request.method + ' to ' + request.path);
-    next();
-});
-
-//Login edits, code borrowed from lab 14 and got help from Philip
-
 
 app.listen(8080, () => console.log(`listening on port 8080`));

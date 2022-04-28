@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="products-style.css">
+
+    <title>Keycappa</title>
+</head>
+
+
+
+<body>
+            <h2>Edit Page</h2>
+    <h3>Now editing user...</h3>
+    
+        <form name="edit_form" action="process_edit" method="POST">
+            <main>
+                <div class="container">
+                    <div class="row">
+                        <input type="text" name="fullname" size="30" pattern="[a-zA-Z]+[ ]+[a-zA-Z]+"
+                        placeholder="Re-Enter First & Last Name"><br />
+                    <input type="email" name="email" size="40" placeholder="Enter new Email"
+                        pattern="[a-z0-9._]+@[a-z0-9]+\.[a-z]{3,}$" required title="Please enter valid email."><br />
+                    <input type="password" id="password" name="password" size="40" pattern=".{,8}" required
+                        title="8 Characters Max" placeholder="Enter new Password"><br />
+                    <input type="password" id="repeat_password" name="repeat_password" size="40" pattern=".{,8}" required
+                        title="8 Characters Max" placeholder="Repeat new Password"><br />
+                    <input type="submit" value="edit" class="btn">
+                        
+                    </div>
+                </div>            
+         </main>
+        </form>
+</body>
+
+</html>
+
+<script>
+    registration_form.action +=  location.search;
+</script>
