@@ -18,11 +18,7 @@ if(fs.existsSync(filename)){
     var data = fs.readFileSync(filename, 'utf-8');
     //parse to object
     var users = JSON.parse(data);
-    //checks if it exists
-    if(typeof users["kazman"] != undefined ){
-        //prints
-         console.log(users["kazman"].password);
-    }
+    
 } else{
     console.log(`${filename} does not exist`);
 }
@@ -63,6 +59,7 @@ app.post("/login", function (request, response) {
     } else{
         response.send(`${request.body.username} does not exist <br> ${str}`);
     }
+    
 
 });
 app.get("/register", function (request, response) {
