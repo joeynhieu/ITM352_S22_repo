@@ -1,9 +1,37 @@
+<!--Author: Joey Nhieu Index Page
+Template reference/used: https://www.w3schools.com/bootstrap/tryit.asp?filename=trybs_temp_marketing&stacked=h-->
 
 <!DOCTYPE html>
 <html>
 <head>
+  <script src="./functions.js">
+    var products_data;
+    var total = 0;
+    loadJSON('get_products_data', function (response) {
+        // Parsing JSON string into object
+        products_data = JSON.parse(response);
+    });
+    loadJSON('get_cart', function (response) {
+        // Parsing JSON string into object
+        shopping_cart = JSON.parse(response);
+        for (pk in shopping_cart) {
+            total += shopping_cart[pk].reduce((a, b) => a + b);
+        }
+    });
 
-<title>W3.CSS Template</title>
+    // get the query string
+    let params = (new URL(document.location)).searchParams;
+    if (params.has('products_key')) {
+        var this_product_key = params.get('products_key');
+    } else {
+        document.write('no products key in query string');
+        document.stop;
+    }
+    //nav_bar(this_product_key, products_data);
+    cart_total.innerHTML = total;
+</script>
+
+<title>Keycappa</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="./new_temp.css">
@@ -17,7 +45,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 </head>
 <body class="w3-content" style="max-width:1200px">
 
-<!-- Sidebar/menu -->
+<!-- Sidebar/menu s-->
 <nav class="w3-sidebar w3-bar-block w3-white w3-collapse w3-top" style="z-index:3;width:250px" id="mySidebar">
   <div class="w3-container w3-display-container w3-padding-16">
     <i onclick="w3_close()" class="fa fa-remove w3-hide-large w3-button w3-display-topright"></i>
@@ -26,8 +54,9 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
   </div>
   <div class="w3-padding-64 w3-large w3-text-grey" style="font-weight:bold">
     <a href="./index.html" class="w3-bar-item w3-button">Home</a>
-    <a href="./products_display.html" class="w3-bar-item w3-button">Products</a>
-    <a href="./login_page.html" class="w3-bar-item w3-button">Login/Register</a>
+    <a href="./display_products.html" class="w3-bar-item w3-button">Products</a>
+    <a href="./login_page.html" class="w3-bar-item w3-button">Login</a>
+    <a href="./registration.html" class="w3-bar-item w3-button">Register</a>
   </div>
   <a href="#footer" class="w3-bar-item w3-button w3-padding">Contact</a> 
   <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding" onclick="document.getElementById('newsletter').style.display='block'">Newsletter</a> 
@@ -44,6 +73,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
   <header class="w3-container w3-xlarge">
     <p class="w3-left">Home</p>
     <p class="w3-right">
+      <span id="cart_total">0</span>
       <a href="./cart.html">
       <i class="fa fa-shopping-cart w3-margin-right"></i></a>
       <i class="fa fa-search"></i>
@@ -64,15 +94,14 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
     <br>
 
   <!-- Product grid -->
+  
   <div class="w3-row w3-grayscale">
     <div class="w3-col l3 s6">
       <div class="w3-container">
         <div class="w3-display-container">
           <img src="https://i.etsystatic.com/26055747/r/il/e14c92/3464508854/il_1588xN.3464508854_7dns.jpg" style="width:100%">
           <span class="w3-tag w3-display-topleft"><b class="w3-text-yellow">HOT</b></span>
-          <div class="w3-display-middle w3-display-hover">
-            <button class="w3-button w3-black">Add 1 to cart <i class="fa fa-shopping-cart"></i></button>
-          </div>
+         
         </div>
         <p>Artisan Pokemon: Cubone<br><b>$19.99</b></p>
       </div>
@@ -83,9 +112,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
         <div class="w3-display-container">
           <img src="https://i.etsystatic.com/14420193/r/il/114385/3606877892/il_1588xN.3606877892_627y.jpg" style="width:100%">
           <span class="w3-tag w3-display-topleft">New</span>
-          <div class="w3-display-middle w3-display-hover">
-            <button class="w3-button w3-black">Add 1 to cart <i class="fa fa-shopping-cart"></i></button>
-          </div>
+       
         </div>
         <p>Artisan Sanrio: Cinnamoroll<br><b>$19.99</b></p>
       </div>
@@ -96,9 +123,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
         <div class="w3-display-container">
           <img src="https://i.etsystatic.com/14420193/r/il/a24dc7/3803965181/il_1588xN.3803965181_7a0o.jpg" style="width:100%">
           <span class="w3-tag w3-display-topleft">Sale</span>
-          <div class="w3-display-middle w3-display-hover">
-            <button class="w3-button w3-black">Add 1 to cart <i class="fa fa-shopping-cart"></i></button>
-          </div>
+         
         </div>
         <p>Artisan Green Tea Bear<br><b class="w3-text-red">$50.00</b></p>
       </div>
@@ -109,9 +134,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
         <div class="w3-display-container">
           <img src="https://i.etsystatic.com/25641118/r/il/b41242/3832527587/il_1588xN.3832527587_5xbl.jpg" style="width:100%">
           <span class="w3-tag w3-display-topleft">Sale</span>
-          <div class="w3-display-middle w3-display-hover">
-            <button class="w3-button w3-black">Add 1 to cart <i class="fa fa-shopping-cart"></i></button>
-          </div>
+
         </div>
         <p>Artisan Floral 2<br><b class="w3-text-red">$19.99</b></p>
       </div>
@@ -187,28 +210,3 @@ function w3_close() {
 
 </body>
 </html>
-
-    
-        <form name="registration_form" action="process_registration" method="POST">
-            <main>
-                <div class="container">
-                    <div class="row">
-                        <input type="text" name="fullname" size="30" pattern="[a-zA-Z]+[ ]+[a-zA-Z]+"
-                        placeholder="Enter First & Last Name"><br />
-                    <input type="email" name="email" size="40" placeholder="Enter Email"
-                        pattern="[a-z0-9._]+@[a-z0-9]+\.[a-z]{3,}$" required title="Please enter valid email."><br />
-                    <input type="password" id="password" name="password" size="40" pattern=".{,8}" required
-                        title="8 Characters Max" placeholder="Enter Password"><br />
-                    <input type="password" id="repeat_password" name="repeat_password" size="40" pattern=".{,8}" required
-                        title="8 Characters Max" placeholder="Repeat Password"><br />
-                    <input type="submit" value="Register" class="btn">
-                        
-                    </div>
-                </div>            
-         </main>
-        </form>
-
-
-<script>
-    registration_form.action +=  location.search;
-</script>

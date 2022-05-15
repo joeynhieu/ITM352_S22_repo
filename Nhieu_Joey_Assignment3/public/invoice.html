@@ -4,6 +4,10 @@ Invoice layout reference: https://www.bootdey.com/snippets/view/Simple-invoice-p
 <script src="./product_data.js" type="text/javascript"> </script>
 
 <script>
+	 const urlParams = new URLSearchParams(window.location.search);
+     var email = urlParams.get('email');
+	 document.write(email);
+        
 
     // Code referenced from Assignment 1 example
     
@@ -82,7 +86,7 @@ Invoice layout reference: https://www.bootdey.com/snippets/view/Simple-invoice-p
                   	<tbody>
 						<tr>	
                         <td> 
-								<div><strong>${products[i].brand}</strong></div>
+								<div><strong>${products[i].name}</strong></div>
 							</td>  
 							<td>${quantities[i]}</td>
 							<td>$ ${products[i].price}</td>
@@ -151,7 +155,9 @@ Invoice layout reference: https://www.bootdey.com/snippets/view/Simple-invoice-p
 
 </body>
 <footer>
-	Thank you for your purchase!
+	Thank you for your purchase ! <script>
+
+	</script>
 </footer>
 
 </html>
