@@ -8,12 +8,13 @@ var cookieParser = require('cookie-parser');
 var fs = require('fs');
 var qs = require('qs');
 const queryString = require('query-string');
+const res = require('express/lib/response');
 //Defines file in variable for later usage
 var filename = 'user_data.json';
 app.use(cookieParser());
 
 app.use(myParser.urlencoded({ extended: true }));
-app.use(session({secret: "ITM352 rocks!",resave: false, saveUninitialized: true, cookie: {secure: true}}));
+app.use(session({secret: "ITM352 rocks!",resave: false, saveUninitialized: true, cookie: {secure: false }}));
 
 app.all('*', function (request, response, next) {
   // need to initialize an object to store the cart in the session. We do it when there is any request so that we don't have to check it exists
@@ -36,32 +37,29 @@ if (fs.existsSync(filename)) {
 //Processes user login, code taken and expanded upon from lab 14 and assignment 2 examples
 app.post("/process_login", function (req, res) {
   var LogError = [];
-  console.log(req.body);
   the_email = req.body.email.toLowerCase(); //Formatting of username to fit specifications
   if (typeof users_reg_data[the_email] != 'undefined') { 
-      if (req.body.password == users_reg_data[req.body.email].password) {
-        var users_pass = req.body.password;
-        res.cookie(`users_name`, the_email);
-        res.cookie('session_id', req.sessionID, {maxAge: 15 * 60 * 1000});
-        console.log(req.cookies);
-      //  response.send(`cookie sent for ${users_name}`);
-  var body = res.redirect('/invoice.html?' + req.query + req.body.email);
-  console.log(req.query);
-  console.log(req.body.email);
-          //This redirects to the invoice if the appropriate password is entered
-      } else { //Wrong password
-          LogError.push = ('Invalid Password');
-          console.log(LogError);
-          req.query.email= the_email;
-          req.query.name= users_reg_data[the_email].name;
-          req.query.LogError=LogError.join(';');
-      }
-      } else { //States invalid email and redirects
-          LogError.push = ('Invalid Username');
-          console.log(LogError);
-          req.query.email= the_email;
-          req.query.LogError=LogError.join(';');
-      }
+    if (req.body.password == users_reg_data[req.body.email].password) {
+      var users_pass = req.body.password;
+      res.cookie(`users_name`, the_email, {maxAge: 5 * 60 * 1000});
+      res.cookie('session_id', req.sessionID, {maxAge: 5 * 60 * 1000});
+      console.log(req.cookies);
+    //  response.send(`cookie sent for ${users_name}`);
+    res.redirect('/invoice.html?' + 'email=' + req.body.email);
+    //This redirects to the invoice if the appropriate password is entered
+    } else { //Wrong password
+        LogError.push = ('Invalid Password');
+        console.log(LogError);
+        req.query.email= the_email;
+        req.query.name= users_reg_data[the_email].name;
+        req.query.LogError=LogError.join(';');
+    }
+  } else { //States invalid email and redirects
+      LogError.push = ('Invalid Username');
+      console.log(LogError);
+      req.query.email= the_email;
+      req.query.LogError=LogError.join(';');
+  }
   res.redirect('./login_page.html?' + qs.stringify(req.query));
 });
 
@@ -132,15 +130,101 @@ app.get("/get_products_data", function (request, response) {
   response.json(products_data);
 });
 
+app.get("/get_cart_total", function (req, res) {
+  let cart_total = 0;
+  const currentCart = req.session.cart;
 
-//taken from Prof Ports assignment 3 example code
-app.get("/add_to_cart", function (request, response) {
-  var products_key = request.query['products_key']; // get the product key sent from the form post
-  var quantities = request.query['quantities'].map(Number); // Get quantities from the form post and convert strings from form post to numbers
-  request.session.cart[products_key] = quantities; // store the quantities array in the session cart object with the same products_key. 
-  response.redirect('./cart.html');
+  for (let product_key of Object.keys(currentCart)) {
+    for (let product_name of Object.keys(currentCart[product_key])) {
+      cart_total += currentCart[product_key][product_name]
+    }
+  }
+  
+  res.json({ cart_total });
 });
 
+app.get("/calc_cart", function(req, res) {
+  const currentCart = req.session.cart;
+
+  let subtotal = 0;
+  for (let product_key of Object.keys(currentCart)) {
+    for (let product_name of Object.keys(currentCart[product_key])) {
+      let product = products_data[product_key].find(product => product.name === product_name);
+      let quantity = currentCart[product_key][product_name];
+
+      let extended_price = quantity * product.price;
+      subtotal += extended_price;
+    }
+  }
+                  
+  // Compute sales tax
+  var tax_rate = 0.0575;
+  var sales_tax = subtotal * tax_rate;
+
+  let shipping_cost = 0;
+  // Compute shipping costs
+  if (subtotal <= 50) {
+    shipping_cost = 2;
+  } else if (subtotal <= 100) {
+    shipping_cost = 5;
+  } else {
+    shipping_cost = subtotal * 0.05;
+  }
+
+  // Compute grand total
+  grand_total = subtotal + sales_tax;
+  res.json({ subtotal, sales_tax, shipping_cost, grand_total });
+});
+
+app.get('/invoice', function (req, res) {
+  res.redirect('/invoice.html?' + 'email=' + req.body.email);
+})
+
+//taken from Prof Ports assignment 3 example code
+app.get("/add_to_cart", function (req, res) {
+  console.log(req.query)
+  var products_key = req.query['products_key']; // get the product key sent from the form post
+  var product_name = req.query['product_name'];
+  var quantities = Number(req.query['quantities']); // Get quantities from the form post and convert strings from form post to numbers
+
+  const currentCart = req.session.cart;
+  console.log(req.session.cart)
+
+  if (currentCart[products_key]) {
+    currentCart[products_key] = { ...currentCart[products_key], [product_name]: quantities };
+
+  } else {
+    currentCart[products_key] = { [product_name]: quantities };
+
+  }
+
+  req.session.cart = currentCart;
+  res.redirect('./cart.html');
+});
+
+app.get("/update_cart", function(req, res) {
+  const currentCart = req.session.cart;
+
+  var product_key = req.query['product_key']; // get the product key sent from the form post
+  var product_name = req.query['product_name'];
+  var update = req.query['update'];
+
+  console.log({ product_name, product_key, update});
+
+  if (update === 'Add') {
+    currentCart[product_key][product_name] += 1;
+
+  } else {
+    currentCart[product_key][product_name] -= 1;
+  }
+
+  if (currentCart[product_key][product_name] === 0) {
+    delete currentCart[product_key][product_name]
+  }
+
+  req.session.cart = currentCart;
+  res.redirect('./cart.html');
+})
 
 //taken from Prof Ports assignment 3 example code
 app.get("/get_cart", function (request, response) {

@@ -1,0 +1,163 @@
+<!--Author Joey Nhieu Assignment 2 Invoice Page: 
+code used from previous invoices e.g. Invoice 3 
+Invoice layout reference: https://www.bootdey.com/snippets/view/Simple-invoice-page#html-->
+<script src="./product_data.js" type="text/javascript"> </script>
+
+<script>
+	 const urlParams = new URLSearchParams(window.location.search);
+     var email = urlParams.get('email');
+	 document.write(email);
+        
+
+    // Code referenced from Assignment 1 example
+    
+          let params = (new URL(document.location)).searchParams;
+          var quantities = [];
+          if (params.has('submitPurchase')) { 
+            for (i = 0; i < products.length; i++) {
+              if (params.has(`quantity${i}`)) {
+                qtys = params.get(`quantity${i}`);
+                quantities[i] = qtys;
+              }
+            }
+  
+          } else {
+            document.write('Please enter a valid quantity!');
+          }
+          console.log(quantities);
+  
+  </script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./invoice.css">
+    <title>Document</title>
+</head>
+<body>
+    
+
+
+
+	<div class="container bootstrap snippets bootdey">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-6 col-sm-6 text-left">
+						
+						<div class="client">
+						<h4><strong>Login Successful! Here is your invoice:</strong></h4>
+					</div>
+				</div>
+
+				<div class="col-md-6 col-sm-6 text-right">
+					<div class="payment">
+					<h4><strong>Payment</strong> Details</h4>
+					<ul class="list-unstyled">
+						<li><strong>Store Name:</strong> KeyCappa</li>
+						<li><strong>Account Number:</strong> 01234xxxx</li>
+                        <li><strong>Invoice Number:</strong> 01234xxxx</li>
+					</ul>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="table-responsive">
+				<table class="table table-condensed nomargin">
+					<thead>
+						<tr>
+							<th>Item Name</th>
+							<th>Quantity</th>
+							<th>Unit Price</th>
+							<th>Extended Price</th>
+						</tr>
+					</thead><script> 
+				
+                         subtotal = 0;
+        for (i = 0; i < products.length; i++) {
+                  if (quantities[i] > 0) {
+                  // product row
+                  extended_price = quantities[i] * products[i].price;
+                  subtotal += extended_price;
+                  document.write(`
+                  	<tbody>
+						<tr>	
+                        <td> 
+								<div><strong>${products[i].name}</strong></div>
+							</td>  
+							<td>${quantities[i]}</td>
+							<td>$ ${products[i].price}</td>
+							<td>$ ${extended_price}</td>
+				
+						</tr>
+                        </tbody>
+                        `)}}
+                        
+                         // Compute sales tax
+        var tax_rate = 0.0575;
+        var sales_tax = subtotal * tax_rate;
+
+        // Compute shipping costs
+        if (subtotal <= 50) {
+          shipping_cost = 2;
+        } else if (subtotal <= 100) {
+          shipping_cost = 5;
+        } else {
+          shipping_cost = subtotal * 0.05;
+        }
+
+        // Compute grand total
+        var grand_total = subtotal + sales_tax;
+</script>
+				</table>
+			</div>
+
+			<hr class="nomargin-top">
+			<div class="row">
+				<div class="col-sm-6 text-left">
+					
+					<p class="nomargin nopadding">
+						<strong>Note:</strong> 
+						Please see instructions for installation.
+						<h4><strong>Contact</strong> Details</h4>
+					</p><br><!-- no P margin for printing - use <br> instead -->
+
+					<address>
+						PO Box 21132 <br>
+						Some street 2355 USA<br>
+						Phone: 1-808-956-8111 <br>
+						Fax: 1-808-956-8111 <br>
+						Email:keycappa@hawaii.edu
+					</address>
+				</div>
+
+				<div class="col-sm-6 text-right">
+					<ul class="list-unstyled">
+						<li><strong>Subtotal: </strong>  $ <script>document.write(subtotal);</script></li>
+						<li><strong>Tax @ 5.75%:</strong>  $<script>document.write(sales_tax.toFixed(2));</script></li>
+						<li><strong>Shipping:</strong> $ <script>document.write(shipping_cost.toFixed(2));</script></li>
+						<li><strong>Grand Total:</strong> $ <script>document.write(grand_total.toFixed(2));</script></li>
+					</ul>     
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="panel panel-default text-right">
+		<div class="panel-body">
+			<a class="btn btn-success" href="#" target="_blank"><i class="fa fa-print"></i> PRINT INVOICE</a>
+		</div>
+	</div>
+</div>
+
+</body>
+<footer>
+	Thank you for your purchase ! <script>
+
+	</script>
+</footer>
+
+</html>

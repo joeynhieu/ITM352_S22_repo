@@ -7,13 +7,11 @@
       loadJSON('get_products_data', function (response) {
           // Parsing JSON string into object
           products_data = JSON.parse(response);
+          console.log(products_data)
       });
       loadJSON('get_cart', function (response) {
           // Parsing JSON string into object
           shopping_cart = JSON.parse(response);
-          for (pk in shopping_cart) {
-              total += shopping_cart[pk].reduce((a, b) => a + b);
-          }
       });
 
       // get the query string
@@ -66,7 +64,17 @@
     <header class="w3-container w3-xlarge">
       <p class="w3-left">Products</p>
       <p class="w3-right">
-          <span id="cart_total">0</span>
+          <span id="cart_total">
+            <script>
+              let cart_total = 0;
+              loadJSON('get_cart_total', (response) => {
+                const parsedResponse = JSON.parse(response);
+                cart_total = parsedResponse.cart_total
+              });
+
+              document.write(cart_total);
+            </script>
+          </span>
         <a href="./cart.html">
         <i class="fa fa-shopping-cart w3-margin-right"></i></a>
         <a href="./product_search.html">
@@ -94,22 +102,28 @@
 
   order_str += `<h4>Please select what ${this_product_key} you want</h4><br>`;
   // We put the whole table in the form so that anything entered in it will get submitted
-  order_str += `<FORM action="/add_to_cart" method="GET">
-              <INPUT TYPE="HIDDEN" NAME="products_key" VALUE="${this_product_key}">
-                 `;
+  order_str += ``;
   products = products_data[this_product_key];
+  console.log(products)
   for (i = 0; i < products.length; i++) {
       order_str += `
+
+      <FORM action="/add_to_cart" method="GET">
+              <INPUT TYPE="HIDDEN" NAME="products_key" VALUE="${this_product_key}">
       <p class ="prodcenter">
+
                 <img src="${products[i]['image']}" style="width:50%"> </p>
             
           
             <p class ="prodcentertext">${products[i]['name']}<br><b>$${products[i]['price']}</b><br>
                 Available: ${products[i]['stock_avl']}
                 <br>
-                <INPUT TYPE="TEXT"  name="quantities[${i}]" value="${(typeof shopping_cart[this_product_key]!='undefined')?shopping_cart[this_product_key][i]:0}">
+                <INPUT TYPE="TEXT"  name="quantities[${i}]" value="0">
                
-                <INPUT TYPE="SUBMIT"  name="Submit" value="Add to Cart"> </p> 
+                <INPUT TYPE="hidden"  name="product_name" value="${products[i]['name']}">
+                <INPUT TYPE="SUBMIT"  name="submit" value="Add to Cart"> </p> 
+
+            </p> 
   </FORM>
                 
                 `;

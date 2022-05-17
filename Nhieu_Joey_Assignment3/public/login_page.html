@@ -5,7 +5,9 @@
 <title>Keycappa</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./functions.js"></script>
 <link rel="stylesheet" href="./new_temp.css">
+<link rel="stylesheet" href="./main.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -44,6 +46,17 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
   <header class="w3-container w3-xlarge">
     <p class="w3-left">Login</p>
     <p class="w3-right">
+      <span id="cart_total">
+        <script>
+          let cart_total = 0;
+          loadJSON('get_cart_total', (response) => {
+            const parsedResponse = JSON.parse(response);
+            cart_total = parsedResponse.cart_total
+          });
+
+          document.write(cart_total);
+        </script>
+      </span>
       <a href="./cart.html">
       <i class="fa fa-shopping-cart w3-margin-right"></i></a>
       <i class="fa fa-search"></i>
@@ -56,20 +69,28 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
   <form name="login_form" action="/process_login" method="POST">
     <main>
         <div class="container">
-            <div class="row">
+            <div class="row" id="form">
+              <form >
+                  <input type="text" name="email" size="40" placeholder="enter email"><br />
+                  <input type="password" name="password" size="40" placeholder="enter password"><br />
+                  <input type="submit" value="Submit" id="submit" name = "submit_button"> 
+              </form>
+              <input type="button"  value="Register" id = "register"
+              onclick="window.location='./registration.html?' + location.search;"></div>
+            </div>
+            <div class="row hidden" id="welcome">
+              <h2>Welcome! You are already logged in.</h2>
+              <h4>Session expires: 5 mins</h4>
+            </div>
+            <script>
+              const cookies = document.cookie;
+              const sessionId = cookies.split('; ').find(cookie => cookie.startsWith('session_id'));
 
-                <form >
-                    <input type="text" name="email" size="40" placeholder="enter email"><br />
-                    <input type="password" name="password" size="40" placeholder="enter password"><br />
-                    <input type="submit" value="Submit" id="submit" name = "submit_button"> 
-                </form>
-
-                <input type="button"  value="Register" id = "register"
-                onclick="window.location='./registration.html?' + location.search;">
-
-
-        </div>
-        </div>
+              if (sessionId) {
+                document.getElementById('form').classList.toggle('hidden');
+                document.getElementById('welcome').classList.toggle('hidden');
+              }
+            </script>
     </main>
     
 </form>

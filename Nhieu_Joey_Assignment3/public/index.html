@@ -73,7 +73,17 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
   <header class="w3-container w3-xlarge">
     <p class="w3-left">Home</p>
     <p class="w3-right">
-      <span id="cart_total">0</span>
+      <span id="cart_total">
+        <script>
+          let cart_total = 0;
+          loadJSON('get_cart_total', (response) => {
+            const parsedResponse = JSON.parse(response);
+            cart_total = parsedResponse.cart_total
+          });
+
+          document.write(cart_total);
+        </script>
+      </span>
       <a href="./cart.html">
       <i class="fa fa-shopping-cart w3-margin-right"></i></a>
       <i class="fa fa-search"></i>

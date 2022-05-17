@@ -1,32 +1,7 @@
 <!--Author Joey Nhieu Assignment 2 Invoice Page: 
 code used from previous invoices e.g. Invoice 3 
 Invoice layout reference: https://www.bootdey.com/snippets/view/Simple-invoice-page#html-->
-<script src="./product_data.js" type="text/javascript"> </script>
-
-<script>
-	 const urlParams = new URLSearchParams(window.location.search);
-     var email = urlParams.get('email');
-	 document.write(email);
-        
-
-    // Code referenced from Assignment 1 example
-    
-          let params = (new URL(document.location)).searchParams;
-          var quantities = [];
-          if (params.has('submitPurchase')) { 
-            for (i = 0; i < products.length; i++) {
-              if (params.has(`quantity${i}`)) {
-                qtys = params.get(`quantity${i}`);
-                quantities[i] = qtys;
-              }
-            }
-  
-          } else {
-            document.write('Please enter a valid quantity!');
-          }
-          console.log(quantities);
-  
-  </script>
+<!-- <script src="./product_data.js" type="text/javascript"> </script> -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,6 +10,22 @@ Invoice layout reference: https://www.bootdey.com/snippets/view/Simple-invoice-p
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./invoice.css">
     <title>Document</title>
+		<script src="./functions.js"></script>
+		<script>
+			const urlParams = new URLSearchParams(window.location.search);
+			 var email = urlParams.get('email');
+			 loadJSON('get_products_data', function (response) {	 
+				 // Parsing JSON string into object
+				 products_data = JSON.parse(response);
+			 });     
+			 loadJSON('get_cart', function (response) {	 
+				 // Parsing JSON string into object
+				 shopping_cart = JSON.parse(response);
+			 });
+			 loadJSON('calc_cart', function (response) {
+				 calc_cart = JSON.parse(response);
+			 })
+		 </script>
 </head>
 <body>
     
@@ -48,7 +39,7 @@ Invoice layout reference: https://www.bootdey.com/snippets/view/Simple-invoice-p
 					<div class="col-md-6 col-sm-6 text-left">
 						
 						<div class="client">
-						<h4><strong>Login Successful! Here is your invoice:</strong></h4>
+						<h4><strong>Login Successful! <script>document.write(email)</script> Here is your invoice:</strong></h4>
 					</div>
 				</div>
 
@@ -74,44 +65,29 @@ Invoice layout reference: https://www.bootdey.com/snippets/view/Simple-invoice-p
 							<th>Unit Price</th>
 							<th>Extended Price</th>
 						</tr>
-					</thead><script> 
-				
-                         subtotal = 0;
-        for (i = 0; i < products.length; i++) {
-                  if (quantities[i] > 0) {
-                  // product row
-                  extended_price = quantities[i] * products[i].price;
-                  subtotal += extended_price;
-                  document.write(`
-                  	<tbody>
-						<tr>	
-                        <td> 
-								<div><strong>${products[i].name}</strong></div>
-							</td>  
-							<td>${quantities[i]}</td>
-							<td>$ ${products[i].price}</td>
-							<td>$ ${extended_price}</td>
-				
-						</tr>
-                        </tbody>
-                        `)}}
-                        
-                         // Compute sales tax
-        var tax_rate = 0.0575;
-        var sales_tax = subtotal * tax_rate;
+					</thead>
+					<script> 
+						for (let product_key of Object.keys(shopping_cart)) {
+          		for (let product_name of Object.keys(shopping_cart[product_key])) {
+								product = products_data[product_key].find(product => product.name === product_name);
+								quantity = shopping_cart[product_key][product_name];
+								extended_price = quantity * product.price;
 
-        // Compute shipping costs
-        if (subtotal <= 50) {
-          shipping_cost = 2;
-        } else if (subtotal <= 100) {
-          shipping_cost = 5;
-        } else {
-          shipping_cost = subtotal * 0.05;
-        }
-
-        // Compute grand total
-        var grand_total = subtotal + sales_tax;
-</script>
+								document.write(`
+									<tbody>
+										<tr>	
+											<td> 
+												<div><strong>${product_name}</strong></div>
+											</td>  
+											<td>${quantity}</td>
+											<td>$ ${product.price}</td>
+											<td>$ ${extended_price}</td>
+										</tr>
+									</tbody>
+								`)
+							}
+						}
+					</script>
 				</table>
 			</div>
 
@@ -136,10 +112,10 @@ Invoice layout reference: https://www.bootdey.com/snippets/view/Simple-invoice-p
 
 				<div class="col-sm-6 text-right">
 					<ul class="list-unstyled">
-						<li><strong>Subtotal: </strong>  $ <script>document.write(subtotal);</script></li>
-						<li><strong>Tax @ 5.75%:</strong>  $<script>document.write(sales_tax.toFixed(2));</script></li>
-						<li><strong>Shipping:</strong> $ <script>document.write(shipping_cost.toFixed(2));</script></li>
-						<li><strong>Grand Total:</strong> $ <script>document.write(grand_total.toFixed(2));</script></li>
+						<li><strong>Subtotal: </strong>  $ <script>document.write(calc_cart.subtotal);</script></li>
+						<li><strong>Tax @ 5.75%:</strong>  $<script>document.write(calc_cart.sales_tax.toFixed(2));</script></li>
+						<li><strong>Shipping:</strong> $ <script>document.write(calc_cart.shipping_cost.toFixed(2));</script></li>
+						<li><strong>Grand Total:</strong> $ <script>document.write(calc_cart.grand_total.toFixed(2));</script></li>
 					</ul>     
 				</div>
 			</div>
