@@ -1,6 +1,8 @@
 <head>
     <script src="./functions.js"></script>
     <script>
+
+      
         var products_data;
         loadJSON('get_products_data', function (response) {
             // Parsing JSON string into object
@@ -10,12 +12,15 @@
             // Parsing JSON string into object
             shopping_cart = JSON.parse(response);
         });
+        console.log(products_data)
+
         //nav_bar('', products_data);
     </script>
     <title>Keycappa</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./new_temp.css">
+    <link rel="stylesheet" href="./main.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -52,7 +57,17 @@
       <header class="w3-container w3-xlarge">
         <p class="w3-left">Products</p>
         <p class="w3-right">
-            <span id="cart_total">0</span>
+            <span id="cart_total">
+              <script>
+                let cart_total = 0;
+                loadJSON('get_cart_total', (response) => {
+                  const parsedResponse = JSON.parse(response);
+                  cart_total = parsedResponse.cart_total
+                });
+
+                document.write(cart_total);
+              </script>
+            </span>
           <a href="./cart.html">
           <i class="fa fa-shopping-cart w3-margin-right"></i></a>
           <a href="./product_search.html">
@@ -69,42 +84,63 @@
    
       <h2>You have in your shopping cart:</h2> 
   
-    <script>
-        //  Email address: <input type=email name=email>
-    </script>   
-     <form action="/login" method=GET> 
-     Login to accept terms and proceed with check out <input type="button"  value="Login" id = "Login"
-      onclick="window.location='./login_page.html?' + location.search;">
-     </form>
-      <script>  
-       function editQtyAdd(){
-          qty += 1;
-      }
-        for(product_key in products_data) {
-          for(i=0; i<products_data[product_key].length; i++) {
-              if(typeof shopping_cart[product_key] == 'undefined') continue;
-              qty = shopping_cart[product_key][i];
-              if(qty > 0) {
-                  cart_total.innerHTML = qty;
-                document.write(`
-                <p class ="prodcenter">
-                <img src=${products_data[product_key][i].image} style="width:50%"> </p>
-            
-          
-            <p class ="prodcentertext">${products_data[product_key][i].name}<br><b>$${products_data[product_key][i].price}</b><br>
-                Available: ${products_data[product_key][i].stock_avl}
-                <br> <b> Quantity ${qty} </b>
-                <button id="add" onclick="editQtyAdd()">Add</button>
-                <button id="remove" onclick="editQtySub()">Remove</button></p>
-              
-                `);
-                
-              } 
+    <div class="hidden" id="cart"> 
+      <script>
+        for (let product_key of Object.keys(shopping_cart)) {
+          for (let product_name of Object.keys(shopping_cart[product_key])) {
+            document.write(`
+              <p class ="prodcenter">
+                <img src=${products_data[product_key].find(product => product.name === product_name).image} style="width:50%">
+              </p>
+  
+              <p class ="prodcentertext">
+                ${products_data[product_key].find(product => product.name === product_name).name}<br><b>
+                ${products_data[product_key].find(product => product.name === product_name).price}</b><br>
+                Available: ${products_data[product_key].find(product => product.name === product_name).stock_avl}
+                <br><b> Quantity ${shopping_cart[product_key][product_name]} </b>
+              </p> 
+  
+              <p class="prodcenter">
+                <form action='/update_cart' method="GET">
+                  <input type="hidden" name="product_key" value="${product_key}">
+                  <input type="hidden" name="product_name" value="${product_name}">
+                  <input type="submit" name="update" value="Add">
+                </form>
+                <form action='/update_cart' method="GET">
+                  <input type="hidden" name="product_key" value="${product_key}">
+                  <input type="hidden" name="product_name" value="${product_name}">
+                  <input type="submit" name="update" value="Remove">
+                </form>
+              </p>
+            `);
           }
-      }
-      
-      
+        }
       </script>
+    </div>
+    <div id="form">
+      <form action="/login" method=GET> 
+        Login to accept terms and proceed with check out <input type="button"  value="Login" id = "Login"
+         onclick="window.location='./login_page.html?' + location.search;">
+      </form>
+    </div>
+    <div id="inv">
+      <form action="" method=GET> 
+        Proceed with check out <input type="button"  value="Checkout" id = "Checkout"
+         onclick="window.location='./invoice.html?' + location.search;">
+      </form>
+    </div>
+    <script>
+      const cookies = document.cookie;
+      const sessionId = cookies.split('; ').find(cookie => cookie.startsWith('session_id'));
+
+      if (sessionId) {
+        document.getElementById('form').classList.toggle('hidden');
+        document.getElementById('cart').classList.toggle('hidden');
+      }
+    </script>
+    <script>  
+    
+    </script>
       
   
       <!-- Footer -->
