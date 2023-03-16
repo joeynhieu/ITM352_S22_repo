@@ -1,3 +1,4 @@
 {
-    "livePreview.defaultPreviewPath": "/Nhieu_Joey_Assignment2/public/products_display.html"
+    "livePreview.defaultPreviewPath": "/Nhieu_Joey_Assignment2/public/products_display.html",
+    "liveServer.settings.port": 5501
 }
