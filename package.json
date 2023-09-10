@@ -5,6 +5,7 @@
     "global": "^4.4.0",
     "http-server": "^14.1.0",
     "minimist": "^1.2.5",
-    "nodemon": "^2.0.16"
+    "nodemon": "^2.0.22",
+    "query-string": "^8.1.0"
   }
 }
